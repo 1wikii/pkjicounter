@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trafic Counter</title>
+
+    <script src="https://kit.fontawesome.com/c2b7ee3658.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="traffic.png">
+    <link rel="stylesheet" href="/index.css">
+</head>
+<body>
+
+
+    <main class="container">
+
+        <section id="left-side" class="section">
+            <input id="item-number-1" class="item" disabled>
+                
+            </input>
+            <input id="item-number-2" class="item" disabled>
+                
+            </input>
+            <input id="item-number-3" class="item" disabled>
+                
+            </input>
+            <input id="item-number-4" class="item" disabled>
+                
+            </input>
+            <input id="item-number-5" class="item" disabled>
+                
+            </input>
+
+            <button class="item-tanggal" id="item-tanggal">  </button>
+        </section>
+        <section id="right-side">
+            <button id="item-button-1" class="item" onclick="Inc('item-number-1')"> 
+                <i class="fa-solid fa-car"></i>
+            </button>
+            <button id="item-button-2" class="item" onclick="Inc('item-number-2')">
+                <i class="fa-solid fa-motorcycle"></i>
+            </button>
+            <button id="item-button-3" class="item" onclick="Inc('item-number-3')">
+                <i class="fa-solid fa-bicycle"></i>
+            </button>
+            <button id="item-button-4" class="item" onclick="Inc('item-number-4')">
+                <i class="fa-solid fa-person-walking"></i>
+            </button>
+            <button id="item-button-5" class="item" onclick="Inc('item-number-5')">
+                <i class="fa-solid fa-person-walking-with-cane"></i>
+            </button>
+
+            <button class="item-reset" onclick="Reset()"> Reset </button>
+        </section>
+
+    </main>
+
+    <script>
+
+        // Tanggal
+        let tanggal = document.getElementById('item-tanggal');
+        let currentDate = new Date().toLocaleDateString();
+
+        tanggal.innerHTML = currentDate;
+
+
+        // Fungsi Reset
+        function Reset(){
+            let input = document.querySelectorAll('input');
+
+            input.forEach(function(input) {
+                input.value = 0;
+            });
+
+            setSession();
+        }
+
+
+        // Fungsi Increment
+        function Inc(element){
+            let num = document.getElementById(element);
+            let temp = parseInt(num.value);
+
+            num.value = temp + 1;
+
+            setSession();
+        }
+
+
+        // Load Session
+        for(let i=1; i<=5; i++){
+            let loadData = sessionStorage.getItem(`item${i}`);
+                if (loadData) {
+                    document.getElementById(`item-number-${i}`).value = loadData;
+                } else {
+                    document.getElementById(`item-number-${i}`).value = 0;
+                }
+        }
+
+
+        // Membuat Session
+        function setSession(){
+            for(let i=1; i<=5; i++){
+                sessionStorage.setItem(`item${i}`, document.getElementById(`item-number-${i}`).value);
+            }
+        }
+
+    </script>
+</body>
+</html>
