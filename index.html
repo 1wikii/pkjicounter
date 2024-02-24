@@ -60,7 +60,10 @@
 
         // Tanggal
         let tanggal = document.getElementById('item-tanggal');
-        let currentDate = new Date().toLocaleDateString();
+        let now = new Date();
+        let date = now.toLocaleDateString();
+        let time = now.toLocaleTimeString();
+        var currentDate = "Current Date: " + date + "<br>Current Time: " + time;
 
         tanggal.innerHTML = currentDate;
 
