@@ -33,6 +33,7 @@
             </input>
 
             <button class="item-tanggal" id="item-tanggal">  </button>
+            <button class="item-waktu" id="item-waktu">  </button>
         </section>
         <section id="right-side">
             <button id="item-button-1" class="item" onclick="Inc('item-number-1')"> 
@@ -102,7 +103,9 @@
 
 
         // Tanggal
-        //let tanggal = document.getElementById('item-tanggal');
+        let tanggal = document.getElementById('item-tanggal');
+        let currentDate = new Date().toLocaleDateString();
+        document.getElementById('item-tanggal').innerHTML = currentDate;
 
         function updateClock() {
             let now = new Date();
@@ -116,11 +119,11 @@
             seconds = (seconds < 10 ? "0" : "") + seconds;
         
             let timeString = hours + ":" + minutes + ":" + seconds;
-            document.getElementById('item-tanggal').innerHTML = timeString;
+            document.getElementById('item-waktu').innerHTML = timeString;
       }
 
         // Update clock every second
-      setInterval(updateClock, 1000);
+        setInterval(updateClock, 1000);
 
     </script>
 </body>
