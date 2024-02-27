@@ -7,7 +7,7 @@
     <title>Trafic Counter</title>
 
     <script src="https://kit.fontawesome.com/c2b7ee3658.js" crossorigin="anonymous"></script>
-    <link rel="shortcut icon" href="traffic.png">
+    <link rel="shortcut icon" href="./asset/traffic.png">
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
@@ -15,46 +15,61 @@
 
     <main class="container">
 
-        <section id="left-side" class="section">
-            <input id="item-number-1" class="item" disabled>
-                
-            </input>
-            <input id="item-number-2" class="item" disabled>
-                
-            </input>
-            <input id="item-number-3" class="item" disabled>
-                
-            </input>
-            <input id="item-number-4" class="item" disabled>
-                
-            </input>
-            <input id="item-number-5" class="item" disabled>
-                
-            </input>
-
-            <button class="item-tanggal" id="item-tanggal">  </button>
-            <button class="item-waktu" id="item-waktu">  </button>
-        </section>
-        <section id="right-side">
-            <button id="item-button-1" class="item" onclick="Inc('item-number-1')"> 
-                <i class="fa-solid fa-car"></i>
+        <section id="item-1" class="section">
+            <input id="item-number-1" class="item" disabled> </input>
+            <button id="item-button-1" class="item" onclick="Inc('item-number-1')">
+                <span class="kode-kendaraan">SM</span> 
+                <img class="gambar" src="./asset/sm.png" alt="SM">
             </button>
+        </section>
+
+        <section id="item-2" class="section">
+            <input id="item-number-2" class="item" disabled> </input>
             <button id="item-button-2" class="item" onclick="Inc('item-number-2')">
-                <i class="fa-solid fa-motorcycle"></i>
+                <span class="kode-kendaraan">MP</span>
+                <img class="gambar" src="./asset/mp.png" alt="MP">
             </button>
+        </section>
+            
+                
+        <section id="item-3" class="section">
+            <input id="item-number-3" class="item" disabled> </input>
             <button id="item-button-3" class="item" onclick="Inc('item-number-3')">
-                <i class="fa-solid fa-bicycle"></i>
+                <span class="kode-kendaraan">KS</span>
+                <img class="gambar" src="./asset/ks.png" alt="KS">
             </button>
+        </section>   
+        
+        <section id="item-4" class="section">
+            <input id="item-number-4" class="item" disabled> </input>
             <button id="item-button-4" class="item" onclick="Inc('item-number-4')">
-                <i class="fa-solid fa-person-walking"></i>
+                <span class="kode-kendaraan">BB</span>
+                <img class="gambar" src="./asset/sm.png" alt="BB">
             </button>
+        </section>
+        
+        <section id="item-5" class="section">
+            <input id="item-number-5" class="item" disabled> </input>
             <button id="item-button-5" class="item" onclick="Inc('item-number-5')">
-                <i class="fa-solid fa-person-walking-with-cane"></i>
+                <span class="kode-kendaraan">TB</span>
+                <img class="gambar" src="./asset/sm.png" alt="TB">
             </button>
-
-            <button class="item-reset" onclick="Reset()"> Reset </button>
         </section>
 
+
+        <section id="item-6" class="section">
+            <div id="item-6-left-side">
+                <button id="item-tanggal" class="item">  </button>
+                <button id="item-waktu" class="item">  </button>
+            </div>
+            <div id="item-6-right-side">
+                <button id="item-reset" class="item" onclick="Reset()"> Reset </button>
+                <button id="item-set" class="item" onclick=""> Set </button>
+                <button id="item-data" class="item" onclick=""> Data </button>
+            </div>
+        </section>
+                  
+    
     </main>
 
     <script>
@@ -102,13 +117,19 @@
         }
 
 
+
+
         // Tanggal
-        let tanggal = document.getElementById('item-tanggal');
-        let currentDate = new Date().toLocaleDateString();
+        let now = new Date();
+        let currentDate = now.toLocaleDateString();
         document.getElementById('item-tanggal').innerHTML = currentDate;
 
+        // update jam per-detik
         function updateClock() {
+
             let now = new Date();
+            
+            // Waktu jam-menit-detik
             let hours = now.getHours();
             let minutes = now.getMinutes();
             let seconds = now.getSeconds();
@@ -119,10 +140,15 @@
             seconds = (seconds < 10 ? "0" : "") + seconds;
         
             let timeString = hours + ":" + minutes + ":" + seconds;
-            document.getElementById('item-waktu').innerHTML = timeString;
+            let waktu = document.getElementById('item-waktu');
+            waktu.innerHTML = timeString;
+            
+            // Styling
+            waktu.style.color = "white";
+            waktu.style.backgroundColor = "rgb(3, 10, 52)";
       }
 
-        // Update clock every second
+        // Update jam-menit-detik setiap detik
         setInterval(updateClock, 1000);
 
     </script>

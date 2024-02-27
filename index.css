@@ -1,3 +1,7 @@
+* {
+    font-size: 1em;
+}
+
 body, html{
     padding: 0;
     margin: 0;
@@ -10,32 +14,30 @@ body{
     align-items: center;
 
     margin: 0;
-    padding: 0;
-    padding: 1em 0;
-    height: 100vh;
+    padding: 30px 40px;
 
-    font-family: Arial, Helvetica, sans-serif;
-    background-image: url('bg.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    background-color: rgb(7, 6, 6);
 
 }
 
+::-webkit-scrollbar{
+    background-color: black;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: grey;
+}
+
 input, button{
-    font-size: 1.8em;
     border-radius: 10px;
 }
 
 input{
-    padding: 10px;
+    text-align: center;
+    width: 50%;
     
     outline-color: rgb(3, 10, 52);
     color: rgb(255, 255, 255);
-    width: 90%;
-
-    text-align: center;
-
     background-color: rgba(0, 0, 0, 0.286);
 
 }
@@ -43,7 +45,6 @@ button{
     text-align: center;
 
     padding: 10px 15px;
-    width: 50%; 
 
     box-shadow: 8px 8px 15px rgba(0,0,0,0.5);
     transition: transform .2s;
@@ -52,57 +53,115 @@ button{
 
 
 button:active{
-    transform: translateY(5px);
+    transform: translateY(4px);
 }
 
 
 .container{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 
-    padding: 0 5px;
-    width: 90%;
-    height: 90%;
+    padding: 20px 30px;
+    width: 40%;
+    height: auto;
 
     border-radius: 20px;
-    box-shadow: 2px 2px 5px rgba(245, 245, 245, 0.18);
+    box-shadow: 4px 4px 5px rgba(255, 255, 255, 0.38);
     background-color: rgba(77, 76, 76, 0.500);
 }
 
-.container #left-side,
-.container #right-side{
+
+.container .section{
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    flex-wrap: wrap;
+    justify-content: space-between;   
 
-    width: 50%;
 }
-
 
 .container .item{ 
-    margin: 10px auto;
+    margin: 10px 0;
 }
 
-.container .item-tanggal,
-.container .item-waktu,
-.container .item-reset{
-    width: auto;
+.container .item .kode-kendaraan{
+    display: block;
+    margin-bottom: 10px;
+
+    font-weight: bold;
+}
+
+
+
+.container #item-6{
+    margin: 0 0 0 0;
+
+    display: flex;
+    flex-direction: row;
+}
+
+
+.container #item-6-left-side,
+.container #item-6-right-side{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    padding: 10px;
+
+    /* width: 50%; */
+}
+
+.container #item-tanggal,
+.container #item-waktu{
     margin: 0;
-    font-size: 1.5em;
+    color: white;
+    font-style: italic;
+    /* width: 50%; */
 
     background-color: rgb(3, 10, 52);
 }
 
-
-.container .item-tanggal,
-.container .item-waktu{
-    color: white;
-    font-style: italic;
+.container #item-6-right-side #item-reset,
+.container #item-6-right-side #item-set,
+.container #item-6-right-side #item-data{
+    /* color: white; */
+    font-weight: 900;
 }
 
-.container .item-reset{
-    color: red;
-    font-weight: bold;
+#item-reset{
+    background-color: red;
+}
+
+#item-set{
+    background-color: blue;
+}
+
+#item-data{
+    background-color: green;
+}
+
+
+/* ---------------GAMBARR-------------- */
+
+.gambar{
+    width: 80px;
+}
+
+
+
+
+
+
+
+
+/* --------------- RESPONSIVE -------------- */
+
+@media (max-width: 450px){
+
+    .container{
+        width: 90%;
+    }
+
+    .gambar{
+        width: 60px;
+    }
 }
