@@ -98,14 +98,27 @@
         </div>
     </div>
 
+    <div class="modal" id="modal-tanya-reset" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Apakah anda yakin melakukan <strong> <i> reset </i></strong> ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn-verify-reset" class="btn btn-light" data-bs-dismiss="modal"> Ya </button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"> Tidak </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script>
-        const myModal = new bootstrap.Modal(document.getElementById('modal-data-disimpan'));
-        myModal.show();
+        var isSetActive = false;
 
         $(document).ready(function() {
 
-            // Fungsi Increment Per-button
+            /*------------------------------- CLICK LISTENER -------------------------------*/
             $("#item-button-1").click(function() {
                 $("#item-number-1").val(parseInt($("#item-number-1").val()) + 1);
 
@@ -137,14 +150,54 @@
             });
 
 
-
-            // Fungsi Reset
+            // RESET
             $("#item-reset").click(function() {
 
-                $("input").val(0);
+                $('#btn-verify-reset').click(function() {
+                    if (!isSetActive) {
 
-                setSession();
+                    }
+                });
+
             });
+
+            // SET
+            $("#item-set").click(function() {
+
+
+            });
+
+            // DATA
+            $("#item-data").click(function() {
+
+
+            });
+
+
+            /*------------------------------- CLICK LISTENER -------------------------------*/
+
+
+            /*------------------------------- MODAL -------------------------------*/
+
+            function modalDataDisimpan() {
+                const myModal = new bootstrap.Modal(document.getElementById('modal-data-disimpan'));
+                myModal.show();
+            }
+
+            function modalTanyaReset() {
+                const myModal = new bootstrap.Modal(document.getElementById('modal-tanya-reset'));
+                myModal.show();
+            }
+
+            /*------------------------------- MODAL -------------------------------*/
+
+
+
+            // Fungsi Reset
+            function reset() {
+                $("input").val(0);
+            }
+
 
 
 
