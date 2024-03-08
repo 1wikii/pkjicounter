@@ -140,6 +140,23 @@ button:active{
 }
 
 
+
+
+
+/* --------------- MODAL ALERT -------------- */
+.modal-dialog{
+    margin: 50% 2% 0 2%;
+}
+
+.modal-body{
+    font-weight: bold;
+}
+
+
+
+
+
+
 /* ---------------GAMBARR-------------- */
 
 .gambar{
@@ -157,8 +174,12 @@ button:active{
 
 @media (max-width: 450px){
 
+    body{
+        padding: 20px 15px;
+    }
+
     .container{
-        width: 90%;
+        width: 100%;
     }
 
     .gambar{
