@@ -122,6 +122,7 @@ button:active{
 
 .container #item-6-right-side #item-reset,
 .container #item-6-right-side #item-set,
+.container #item-6-right-side #item-stop,
 .container #item-6-right-side #item-data{
     /* color: white; */
     font-weight: 900;
@@ -131,7 +132,8 @@ button:active{
     background-color: red;
 }
 
-#item-set{
+#item-set,
+#item-stop{
     background-color: blue;
 }
 
@@ -139,7 +141,11 @@ button:active{
     background-color: green;
 }
 
+/* khusus */
 
+#item-stop{
+    display: none;
+}
 
 
 

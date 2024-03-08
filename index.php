@@ -71,9 +71,10 @@
                 <button id="item-waktu" class="item"> </button>
             </div>
             <div id="item-6-right-side">
-                <button id="item-reset" class="item" onclick="Reset()"> Reset </button>
-                <button id="item-set" class="item" onclick=""> Set </button>
-                <button id="item-data" class="item" onclick=""> Data </button>
+                <button id="item-reset" class="item"> Reset </button>
+                <button id="item-set" class="item"> Set </button>
+                <button id="item-stop" class="item"> Stop </button>
+                <button id="item-data" class="item"> Data </button>
             </div>
         </section>
 
@@ -84,12 +85,21 @@
     <div class="modal" id="modal-data-disimpan" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-                <!-- <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div> -->
                 <div class="modal-body">
-                    <p>Data tersimpan otomatis</p>
+                    <p>Data tersimpan otomatis.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"> Tutup </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-tidak-bisa-reset" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Set interval sedang aktif,<strong> <i> reset </i></strong> gagal! </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal"> Tutup </button>
@@ -153,17 +163,43 @@
             // RESET
             $("#item-reset").click(function() {
 
-                $('#btn-verify-reset').click(function() {
-                    if (!isSetActive) {
+                if (isSetActive) {
+                    modalTidakBisaReset();
+                } else {
 
-                    }
-                });
+                    modalTanyaReset();
+
+                    $('#btn-verify-reset').click(function() {
+                        reset();
+                    });
+
+                }
 
             });
 
             // SET
             $("#item-set").click(function() {
+                if (isSetActive) {
+                    isSetActive = false;
 
+                    $("#item-set").css({
+                        'display': 'block',
+                    });
+
+                    $("#item-stop").css({
+                        'display': 'none',
+                    });
+                } else {
+                    isSetActive = true;
+
+                    $("#item-stop").css({
+                        'display': 'block',
+                    });
+
+                    $("#item-set").css({
+                        'display': 'none',
+                    });
+                }
 
             });
 
@@ -186,6 +222,11 @@
 
             function modalTanyaReset() {
                 const myModal = new bootstrap.Modal(document.getElementById('modal-tanya-reset'));
+                myModal.show();
+            }
+
+            function modalTidakBisaReset() {
+                const myModal = new bootstrap.Modal(document.getElementById('modal-tidak-bisa-reset'));
                 myModal.show();
             }
 
