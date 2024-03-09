@@ -24,7 +24,7 @@
     <main class="container">
 
         <section id="item-1" class="section">
-            <input id="item-number-1" class="item" disabled> </input>
+            <input name="sm" id="item-number-1" class="item" disabled> </input>
             <button id="item-button-1" class="item">
                 <span class="kode-kendaraan">SM</span>
                 <img class="gambar" src="./asset/sm.png" alt="SM">
@@ -32,7 +32,7 @@
         </section>
 
         <section id="item-2" class="section">
-            <input id="item-number-2" class="item" disabled> </input>
+            <input name="mp" id="item-number-2" class="item" disabled> </input>
             <button id="item-button-2" class="item">
                 <span class="kode-kendaraan">MP</span>
                 <img class="gambar" src="./asset/mp.png" alt="MP">
@@ -41,7 +41,7 @@
 
 
         <section id="item-3" class="section">
-            <input id="item-number-3" class="item" disabled> </input>
+            <input name="ks" id="item-number-3" class="item" disabled> </input>
             <button id="item-button-3" class="item">
                 <span class="kode-kendaraan">KS</span>
                 <img class="gambar" src="./asset/ks.png" alt="KS">
@@ -49,7 +49,7 @@
         </section>
 
         <section id="item-4" class="section">
-            <input id="item-number-4" class="item" disabled> </input>
+            <input name="bb" id="item-number-4" class="item" disabled> </input>
             <button id="item-button-4" class="item">
                 <span class="kode-kendaraan">BB</span>
                 <img class="gambar" src="./asset/sm.png" alt="BB">
@@ -57,7 +57,7 @@
         </section>
 
         <section id="item-5" class="section">
-            <input id="item-number-5" class="item" disabled> </input>
+            <input name="tb" id="item-number-5" class="item" disabled> </input>
             <button id="item-button-5" class="item">
                 <span class="kode-kendaraan">TB</span>
                 <img class="gambar" src="./asset/sm.png" alt="TB">
@@ -125,6 +125,8 @@
 
     <script>
         var isSetActive = false;
+        var startInterval = '';
+        var endInterval = '';
 
         $(document).ready(function() {
 
@@ -179,29 +181,33 @@
 
             // SET
             $("#item-set").click(function() {
-                if (isSetActive) {
-                    isSetActive = false;
+                isSetActive = true;
+                startInterval = getInterval();
 
-                    $("#item-set").css({
-                        'display': 'block',
-                    });
+                $("#item-stop").css({
+                    'display': 'block',
+                });
 
-                    $("#item-stop").css({
-                        'display': 'none',
-                    });
-                } else {
-                    isSetActive = true;
-
-                    $("#item-stop").css({
-                        'display': 'block',
-                    });
-
-                    $("#item-set").css({
-                        'display': 'none',
-                    });
-                }
+                $("#item-set").css({
+                    'display': 'none',
+                });
 
             });
+
+
+            $("#item-stop").click(function() {
+                isSetActive = false;
+
+                $("#item-set").css({
+                    'display': 'block',
+                });
+
+                $("#item-stop").css({
+                    'display': 'none',
+                });
+            });
+
+
 
             // DATA
             $("#item-data").click(function() {
@@ -302,8 +308,73 @@
             // Update jam-menit-detik setiap detik
             setInterval(updateClock, 1000);
 
+
+
+            function getInterval() {
+                let tgl = $('#item-tanggal').text();
+                let waktu = $('#item-waktu').text();
+
+                let interval = tgl + " , " + waktu;
+
+                return interval;
+            }
+
+            function sendData() {
+                let sm = $('#item-number-1').val();
+                let mp = $('#item-number-2').val();
+                let ks = $('#item-number-3').val();
+                let bb = $('#item-number-4').val();
+                let tb = $('#item-number-5').val();
+
+                let data = {
+                    interval: getInterval(),
+                    sm: sm,
+                    mp: mp,
+                    ks: ks,
+                    bb: bb,
+                    tb: tb,
+                }
+
+                $.ajax({
+                    type: "POST",
+                    data: data,
+                    success: function(response) {
+                        // Handle success
+                        // console.log("Data sent successfully");
+                        // console.log(response);
+                        modalDataDisimpan();
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle errors
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+
+
+            // mengirimkan data setiap 15 menit
+            setInterval(sendData, 15 * 60 * 1000);
+
+
         });
     </script>
+
+    <?php
+
+    require_once('config/database.php');
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $sm = $_POST['sm'];
+        $mp = $_POST['mp'];
+        $ks = $_POST['ks'];
+        $bb = $_POST['bb'];
+        $tb = $_POST['tb'];
+
+        $user = DATA();
+    }
+
+    ?>
+
 
 </body>
 

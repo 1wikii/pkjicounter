@@ -52,38 +52,54 @@ class DATABASE
 
 
 //------------------------------- logika ----------------------------------//
-class USER extends DATABASE
+class DATA extends DATABASE
 {
 
    // User Attribute
-   private $username;
-   private $password;
-   private $notHashedPassword;
-   private $date;
-   protected $email;
+   private $interval;
+   private $sm;
+   private $mp;
+   private $ks;
+   private $bb;
+   private $tb;
 
-   // state process
-   private $isAccountAlreadyExist;
-   private $isUsernameExist;
-   private $successCreatingAccount;
-
-   // verification variable
-   private $user;
-   private $verificationStatus;
 
    /*------------CONSTRUCTOR----------------*/
-   public function __construct($username, $password, $email = null)
+   public function __construct($interval, $sm, $mp, $ks, $bb, $tb)
    {
-      $this->username = $username;
-      // $this->password = $this->hashingPassword($password);
-      $this->notHashedPassword = $password;
-      $this->email = $email;
-      // $this->date = $this->getDateTime();
 
-      $this->isAccountAlreadyExist = false;
-      $this->isUsernameExist = false;
-      $this->successCreatingAccount = false;
+      $this->interval = $interval;
+      $this->sm = $sm;
+      $this->mp = $mp;
+      $this->ks = $ks;
+      $this->bb = $bb;
+      $this->tb = $tb;
+
 
       $this->getConnection();
+   }
+
+   function simpanData()
+   {
+      try {
+
+         $query = "INSERT INTO " . $this->getTableName() . " (interval, sm, mp, ks, bb, tb)
+                  VALUES ( :interval, :sm, :mp, :ks, :bb, :tb)";
+
+         // preparing query
+         $stmt = $this->DB->prepare($query);    // to helps prevent SQL injection attacks by parameterizing the query
+         $stmt->bindParam(":interval", $this->interval);
+         $stmt->bindParam(":sm", $this->sm);
+         $stmt->bindParam(":mp", $this->mp);
+         $stmt->bindParam(":ks", $this->ks);
+         $stmt->bindParam(":bb", $this->bb);
+         $stmt->bindParam(":tb", $this->tb);
+
+         // executing query
+         $stmt->execute();
+      } catch (PDOException $e) {
+
+         die("ERRORRRR DATABASEE : " . $e->getMessage());
+      }
    }
 }
