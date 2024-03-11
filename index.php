@@ -74,8 +74,15 @@
                 <button id="item-reset" class="item"> Reset </button>
                 <button id="item-set" class="item"> Set </button>
                 <button id="item-stop" class="item"> Stop </button>
+
                 <button id="item-data" class="item"> Data </button>
             </div>
+        </section>
+
+
+        <section id="item-7" class="d-flex justify-content-center align-items-center mt-5">
+            <a href="stopwatch.php"><button id="item-stopwatch">Stopwatch <i class="fa-solid fa-up-right-from-square"></i></button></a>
+
         </section>
 
     </main>
@@ -120,6 +127,37 @@
                 <div class="modal-footer">
                     <button type="button" id="btn-verify-reset" class="btn btn-light" data-bs-dismiss="modal"> Ya </button>
                     <button type="button" id="modal-tanya-reset-tutup" class="btn btn-primary" data-bs-dismiss="modal"> Tidak </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-tanya-download" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Download file</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Ingin mendownload <strong> <i> traffic_data.xlsx </i></strong> ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal-tanya-download-tutup" class="btn btn-light" data-bs-dismiss="modal"> Tidak </button>
+                    <a href="traffic_data.xlsx"> <button type="button" id="btn-verify-download" class="btn btn-primary" data-bs-dismiss="modal"> Ya </button></a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-tidak-bisa-download" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>Set interval sedang aktif, download file <strong> <i> traffic_data.xlsx </i></strong> gagal! </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal-tidak-bisa-download-tutup" class="btn btn-primary" data-bs-dismiss="modal"> Tutup </button>
                 </div>
             </div>
         </div>
@@ -226,6 +264,17 @@
             // DATA
             $("#item-data").click(function() {
 
+                if (isSetActive) {
+                    modalTidakBisaDownload();
+                } else {
+
+                    modalTanyaDownload();
+
+                    $('#btn-verify-download').click(function() {
+                        $('#modal-tanya-download').hide();
+                    });
+
+                }
 
             });
 
@@ -240,8 +289,6 @@
                     backdrop: 'static',
                     keyboard: false
                 });
-
-                // myModal.show();
 
                 $('#modal-data-disimpan').show();
 
@@ -279,7 +326,48 @@
 
             }
 
+
+            function modalTanyaDownload() {
+
+                $('#modal-tanya-download').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+
+                $('#modal-tanya-download').show();
+
+                $('#modal-tanya-download-tutup').click(function() {
+                    $('#modal-tanya-download').hide();
+                });
+
+            }
+
+            function modalTidakBisaDownload() {
+
+                $('#modal-tidak-bisa-download').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+
+                $('#modal-tidak-bisa-download').show();
+
+                $('#modal-tidak-bisa-download-tutup').click(function() {
+                    $('#modal-tidak-bisa-download').hide();
+                });
+
+            }
+
+
+
             /*-------------------------------TODO MODAL -------------------------------*/
+
+
+            // Fungsi Reset
+            function reset() {
+                $("input").val(0);
+
+                setSession();
+            }
 
 
             // Load Session
@@ -341,13 +429,6 @@
             setInterval(updateClock, 1000);
 
 
-
-            // Fungsi Reset
-            function reset() {
-                $("input").val(0);
-
-                setSession();
-            }
 
             function getStartInterval() {
                 let tgl = $('#item-tanggal').text();
@@ -434,6 +515,7 @@
                 let tb = $('#item-number-5').val();
 
                 let data = {
+                    type: 'INSERT DATA',
                     interval: getInterval(),
                     durasi: getDurasi(),
                     sm: sm,
@@ -460,6 +542,11 @@
         });
     </script>
 
+
+
+
+
+
     <?php
 
     require_once('config/database.php');
@@ -476,7 +563,9 @@
 
         $user = new DATA($interval, $durasi, $sm, $mp, $ks, $bb, $tb);
         $user->simpanData();
+        $user->exportDataToSpreadsheet();
     }
+
     ?>
 
 
