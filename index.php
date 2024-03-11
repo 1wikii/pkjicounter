@@ -78,18 +78,21 @@
             </div>
         </section>
 
-
     </main>
 
-    <!---------------------- Modal Popup--------------------->
-    <div class="modal" id="modal-data-disimpan" tabindex="-1">
+
+
+
+    <!----------------------TODO Modal Popup--------------------->
+    <div class="modal" id="modal-data-disimpan" tabindex="-2">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
                     <p>Data tersimpan otomatis.</p>
+                    <!-- <p id="response"></p> -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"> Tutup </button>
+                    <button type="button" id="modal-data-disimpan-tutup" class="btn btn-primary" data-bs-dismiss="modal"> Tutup </button>
                 </div>
             </div>
         </div>
@@ -102,7 +105,7 @@
                     <p>Set interval sedang aktif,<strong> <i> reset </i></strong> gagal! </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"> Tutup </button>
+                    <button type="button" id="modal-tidak-bisa-reset-tutup" class="btn btn-primary" data-bs-dismiss="modal"> Tutup </button>
                 </div>
             </div>
         </div>
@@ -116,21 +119,24 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="btn-verify-reset" class="btn btn-light" data-bs-dismiss="modal"> Ya </button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"> Tidak </button>
+                    <button type="button" id="modal-tanya-reset-tutup" class="btn btn-primary" data-bs-dismiss="modal"> Tidak </button>
                 </div>
             </div>
         </div>
     </div>
+    <!----------------------TODO Modal Popup--------------------->
+
 
 
     <script>
         var isSetActive = false;
         var startInterval = '';
         var endInterval = '';
+        var timeOutID = null;
 
         $(document).ready(function() {
 
-            /*------------------------------- CLICK LISTENER -------------------------------*/
+            /*-------------------------------TODO CLICK LISTENER -------------------------------*/
             $("#item-button-1").click(function() {
                 $("#item-number-1").val(parseInt($("#item-number-1").val()) + 1);
 
@@ -172,6 +178,7 @@
                     modalTanyaReset();
 
                     $('#btn-verify-reset').click(function() {
+                        $('#modal-tanya-reset').hide();
                         reset();
                     });
 
@@ -182,7 +189,9 @@
             // SET
             $("#item-set").click(function() {
                 isSetActive = true;
-                startInterval = getInterval();
+                startInterval = getStartInterval();
+
+                timeOutID = set15MinutesTimeOut();
 
                 $("#item-stop").css({
                     'display': 'block',
@@ -194,9 +203,14 @@
 
             });
 
-
+            // STOP
             $("#item-stop").click(function() {
                 isSetActive = false;
+                endInterval = getEndInterval();
+
+                clearTimeout(timeOutID);
+
+                sendData();
 
                 $("#item-set").css({
                     'display': 'block',
@@ -216,36 +230,56 @@
             });
 
 
-            /*------------------------------- CLICK LISTENER -------------------------------*/
+            /*-------------------------------TODO CLICK LISTENER -------------------------------*/
 
 
-            /*------------------------------- MODAL -------------------------------*/
+            /*-------------------------------TODO MODAL -------------------------------*/
 
             function modalDataDisimpan() {
-                const myModal = new bootstrap.Modal(document.getElementById('modal-data-disimpan'));
-                myModal.show();
+                $('#modal-data-disimpan').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+
+                // myModal.show();
+
+                $('#modal-data-disimpan').show();
+
+                $('#modal-data-disimpan-tutup').click(function() {
+                    $('#modal-data-disimpan').hide();
+                });
             }
 
             function modalTanyaReset() {
-                const myModal = new bootstrap.Modal(document.getElementById('modal-tanya-reset'));
-                myModal.show();
+                $('#modal-tanya-reset').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+
+
+                $('#modal-tanya-reset').show();
+
+                $('#modal-tanya-reset-tutup').click(function() {
+                    $('#modal-tanya-reset').hide();
+                });
             }
 
             function modalTidakBisaReset() {
-                const myModal = new bootstrap.Modal(document.getElementById('modal-tidak-bisa-reset'));
-                myModal.show();
+
+                $('#modal-tidak-bisa-reset').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+
+                $('#modal-tidak-bisa-reset').show();
+
+                $('#modal-tidak-bisa-reset-tutup').click(function() {
+                    $('#modal-tidak-bisa-reset').hide();
+                });
+
             }
 
-            /*------------------------------- MODAL -------------------------------*/
-
-
-
-            // Fungsi Reset
-            function reset() {
-                $("input").val(0);
-            }
-
-
+            /*-------------------------------TODO MODAL -------------------------------*/
 
 
             // Load Session
@@ -260,14 +294,12 @@
                 }
             }
 
-
             // Membuat Session
             function setSession() {
                 for (let i = 1; i <= 5; i++) {
                     sessionStorage.setItem(`item${i}`, $(`#item-number-${i}`).val());
                 }
             }
-
 
 
             // Tanggal
@@ -310,16 +342,91 @@
 
 
 
-            function getInterval() {
+            // Fungsi Reset
+            function reset() {
+                $("input").val(0);
+
+                setSession();
+            }
+
+            function getStartInterval() {
                 let tgl = $('#item-tanggal').text();
                 let waktu = $('#item-waktu').text();
 
-                let interval = tgl + " , " + waktu;
+                let start = tgl + " , " + waktu;
 
+                return start;
+            }
+
+            function getEndInterval() {
+                let waktu = $('#item-waktu').text();
+
+                return $('#item-waktu').text();
+            }
+
+            function getInterval() {
+                let interval = startInterval + " - " + endInterval;
                 return interval;
             }
 
+
+            function set15MinutesTimeOut(type = 'auto') {
+                let tm = setTimeout(function() {
+
+                    endInterval = getEndInterval();
+                    sendData();
+
+                    $("#item-set").css({
+                        'display': 'block',
+                    });
+
+                    $("#item-stop").css({
+                        'display': 'none',
+                    });
+
+                }, 5000);
+
+                return tm;
+            }
+
+
+            function getDurasi() {
+
+                var detik, menit;
+
+                let regex = /:(\d{2}):(\d{2})/;
+
+                let waktuStart = regex.exec(startInterval);
+                let menitStart = parseInt(waktuStart[1]);
+                let detikStart = parseInt(waktuStart[2]);
+
+                let waktuEnd = regex.exec(endInterval);
+                let menitEnd = parseInt(waktuEnd[1]);
+                let detikEnd = parseInt(waktuEnd[2]);
+
+                if (menitStart != menitEnd) {
+                    let detikHitung = (60 - detikStart) + detikEnd;
+                    let menitHitung = (menitEnd - (menitStart + 1)) * 60;
+
+                    let totalDetik = detikHitung + menitHitung;
+
+                    detik = totalDetik % 60;
+                    menit = (totalDetik - detik) / 60;
+                } else {
+                    detik = detikEnd - detikStart;
+                    menit = 0;
+                }
+
+                let durasi = menit.toString() + " Menit " + detik.toString() + " Detik";
+
+                return durasi;
+            }
+
+
+
             function sendData() {
+                isSetActive = false;
+
                 let sm = $('#item-number-1').val();
                 let mp = $('#item-number-2').val();
                 let ks = $('#item-number-3').val();
@@ -328,6 +435,7 @@
 
                 let data = {
                     interval: getInterval(),
+                    durasi: getDurasi(),
                     sm: sm,
                     mp: mp,
                     ks: ks,
@@ -339,22 +447,15 @@
                     type: "POST",
                     data: data,
                     success: function(response) {
-                        // Handle success
-                        // console.log("Data sent successfully");
-                        // console.log(response);
                         modalDataDisimpan();
                     },
                     error: function(xhr, status, error) {
                         // Handle errors
-                        console.error(xhr.responseText);
+                        console.log(xhr.responseText);
                     }
                 });
+
             }
-
-
-            // mengirimkan data setiap 15 menit
-            setInterval(sendData, 15 * 60 * 1000);
-
 
         });
     </script>
@@ -364,15 +465,18 @@
     require_once('config/database.php');
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $interval = $_POST['interval'];
+        $durasi = $_POST['durasi'];
         $sm = $_POST['sm'];
         $mp = $_POST['mp'];
         $ks = $_POST['ks'];
         $bb = $_POST['bb'];
         $tb = $_POST['tb'];
 
-        $user = DATA();
-    }
 
+        $user = new DATA($interval, $durasi, $sm, $mp, $ks, $bb, $tb);
+        $user->simpanData();
+    }
     ?>
 
 
