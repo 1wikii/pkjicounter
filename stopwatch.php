@@ -22,7 +22,7 @@
 
    <main class="container">
       <section id="item-5" class="d-flex justify-content-center align-items-center mt-5">
-         <a href="index.php"><button id="item-stopwatch"> Back <i class="fa-regular fa-circle-left"></i> </button></a>
+         <a href="main.php"><button id="item-stopwatch"> Back <i class="fa-regular fa-circle-left"></i> </button></a>
       </section>
    </main>
 
