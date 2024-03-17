@@ -188,8 +188,3 @@ class DATA extends DATABASE
       }
    }
 }
-
-
-
-// $user = new DATA('interval', 'durasi', 'kode', 'kode', 'kode', 'kode', 'kode');
-// $user->exportDataToSpreadsheet();
