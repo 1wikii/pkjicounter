@@ -2,6 +2,10 @@
 
 session_start();
 
+if (!isset($_SESSION['username'])) {
+   header("Location: index.php");
+}
+
 ?>
 
 
@@ -11,18 +15,9 @@ session_start();
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Trafic Counter</title>
+   <title>PKJI Counter</title>
 
-
-   <link rel="shortcut icon" href="./asset/traffic.png">
-
-   <!-- Framework dan stack lain -->
-   <script src="https://kit.fontawesome.com/c2b7ee3658.js" crossorigin="anonymous"></script>
-   <script src="node_modules/jquery/dist/jquery.min.js"></script>
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-   <link rel="stylesheet" href="index.css">
+   <?php require_once('_layout.php'); ?>
 
 </head>
 
@@ -30,9 +25,11 @@ session_start();
 
    <main class="container">
 
-      <a href="index.php"> <button id="btn-username" class="btn btn-danger w-auto m-2 mt-0">
+      <div>
+         <button id="btn-username" class="btn btn-danger m-2 mt-0" data-href="index.php">
             <span id="username" class="me-3"> <?= $_SESSION['username']; ?> </span> <i class="fa-solid fa-right-from-bracket"></i>
-         </button></a>
+         </button>
+      </div>
 
       <section id="item-1" class="section">
          <input name="sm" id="item-number-1" class="item" disabled> </input>
@@ -50,7 +47,7 @@ session_start();
          </button>
       </section>
 
-
+      `
       <section id="item-3" class="section">
          <input name="ks" id="item-number-3" class="item" disabled> </input>
          <button id="item-button-3" class="item">
@@ -76,23 +73,42 @@ session_start();
       </section>
 
 
-      <section id="item-6" class="section">
-         <div id="item-6-left-side">
+      <section id="item-6" class="align-items-start section mt-4">
+         <div id="item-6-left-side" class="d-flex justify-content-center flex-column">
             <button id="item-tanggal" class="item"> </button>
             <button id="item-waktu" class="item"> </button>
          </div>
-         <div id="item-6-right-side">
-            <button id="item-reset" class="item"> Reset </button>
-            <button id="item-set" class="item"> Set </button>
-            <button id="item-stop" class="item"> Stop </button>
+         <div id="item-6-right-side" class="w-100 d-flex justify-content-center align-items-end flex-column">
 
-            <button id="item-data" class="item"> Data </button>
+            <button id="item-set" class="btn btn-success py-2 mt-0 w-75 item">
+               <i class="fa-solid fa-circle-play font-size-16 align-middle me-2"></i>Set
+            </button>
+
+            <button id="item-stop" class="btn btn-warning text-white py-2 mt-0 w-75 item">
+               <i class="fa-solid fa-circle-pause font-size-16 align-middle me-2"></i> Stop
+            </button>
+
+            <button id="item-reset" class="btn btn-danger py-2 w-75 item">
+               <i class="fa-regular fa-trash-can font-size-16 align-middle me-2"></i> Reset
+            </button>
+
+            <button id="item-data" class="btn btn-secondary text-white py-2 w-75 item">
+               <i class="fa-solid fa-file-arrow-down font-size-16 align-middle me-2"></i> Data
+            </button>
          </div>
       </section>
 
 
-      <section id="item-7" class="d-flex justify-content-center align-items-center mt-5">
-         <a href="stopwatch.php"><button id="item-stopwatch">Stopwatch <i class="fa-solid fa-up-right-from-square"></i></button></a>
+      <section id="item-7" class="d-flex flex-column mt-5 w-100">
+         <a href="stopwatch.php">
+            <button id="item-stopwatch" class="fw-bold p-1 my-1 w-100">Stopwatch <i class="fa-solid fa-up-right-from-square ms-2"></i>
+            </button>
+         </a>
+
+         <a href="hambatanSamping.php">
+            <button id="item-hambatan" class="fw-bold p-1 my-1 w-100">Hambatan Samping <i class="fa-solid fa-up-right-from-square ms-2"></i>
+            </button>
+         </a>
 
       </section>
 
@@ -186,6 +202,23 @@ session_start();
 
       $(document).ready(function() {
 
+
+         // $(window).on('beforeunload', function() {
+         //    Swal.fire({
+         //       title: "<i>REFRESH</i>?",
+         //       icon: "warning",
+         //       showCancelButton: true,
+         //       confirmButtonColor: "#3085d6",
+         //       cancelButtonColor: "#d33",
+         //       confirmButtonText: "Iya",
+         //       cancelButtonText: "Tidak",
+         //    }).then((result) => {
+         //       if (result.isConfirmed) {
+         //          window.location.href = 'main.php';
+         //       }
+         //    });
+         // });
+
          /*-------------------------------TODO CLICK LISTENER -------------------------------*/
          $("#item-button-1").click(function() {
             $("#item-number-1").val(parseInt($("#item-number-1").val()) + 1);
@@ -218,23 +251,6 @@ session_start();
          });
 
 
-         // RESET
-         $("#item-reset").click(function() {
-
-            if (isSetActive) {
-               modalTidakBisaReset();
-            } else {
-
-               modalTanyaReset();
-
-               $('#btn-verify-reset').click(function() {
-                  $('#modal-tanya-reset').hide();
-                  reset();
-               });
-
-            }
-
-         });
 
          // SET
          $("#item-set").click(function() {
@@ -261,6 +277,7 @@ session_start();
             clearTimeout(timeOutID);
 
             sendData();
+            reset();
 
             $("#item-set").css({
                'display': 'block',
@@ -269,6 +286,25 @@ session_start();
             $("#item-stop").css({
                'display': 'none',
             });
+         });
+
+
+         // RESET
+         $("#item-reset").click(function() {
+
+            if (isSetActive) {
+               modalTidakBisaReset();
+            } else {
+
+               modalTanyaReset();
+
+               $('#btn-verify-reset').click(function() {
+                  $('#modal-tanya-reset').hide();
+                  reset();
+               });
+
+            }
+
          });
 
 
@@ -287,6 +323,26 @@ session_start();
                });
 
             }
+
+         });
+
+
+         // POP UP LOGOUT
+         $("#btn-username").click(function() {
+
+            Swal.fire({
+               title: "Yakin melakukan <i>Logout</i>?",
+               icon: "warning",
+               showCancelButton: true,
+               confirmButtonColor: "#3085d6",
+               cancelButtonColor: "#d33",
+               confirmButtonText: "Iya",
+               cancelButtonText: "Tidak",
+            }).then((result) => {
+               if (result.isConfirmed) {
+                  window.location.href = $(this).attr('data-href');
+               }
+            });
 
          });
 
@@ -432,6 +488,7 @@ session_start();
             $("#item-waktu").css({
                'color': 'white',
                'background-color': 'rgb(3, 10, 52)',
+               'margin-top': '10px',
             });
 
          }
@@ -466,7 +523,9 @@ session_start();
             let tm = setTimeout(function() {
 
                endInterval = getEndInterval();
+
                sendData();
+               reset();
 
                $("#item-set").css({
                   'display': 'block',
@@ -486,24 +545,35 @@ session_start();
 
             var detik, menit;
 
-            let regex = /:(\d{2}):(\d{2})/;
+            let regex = /(\d{2}):(\d{2}):(\d{2})/;
 
             let waktuStart = regex.exec(startInterval);
-            let menitStart = parseInt(waktuStart[1]);
-            let detikStart = parseInt(waktuStart[2]);
+            let jamStart = parseInt(waktuStart[1]);
+            let menitStart = parseInt(waktuStart[2]);
+            let detikStart = parseInt(waktuStart[3]);
 
             let waktuEnd = regex.exec(endInterval);
-            let menitEnd = parseInt(waktuEnd[1]);
-            let detikEnd = parseInt(waktuEnd[2]);
+            let jamEnd = parseInt(waktuEnd[1]);
+            let menitEnd = parseInt(waktuEnd[2]);
+            let detikEnd = parseInt(waktuEnd[3]);
 
-            if (menitStart != menitEnd) {
+            if (menitStart != menitEnd && jamStart == jamEnd) {
+               let detikHitung = (60 - detikStart) + detikEnd; // 40
+               let menitHitung = (menitEnd - (menitStart + 1)) * 60; // 240
+
+               let totalDetik = detikHitung + menitHitung; // 280
+
+               detik = totalDetik % 60; // 40 
+               menit = (totalDetik - detik) / 60; // 4 
+            } else if (jamStart != jamEnd) {
                let detikHitung = (60 - detikStart) + detikEnd;
-               let menitHitung = (menitEnd - (menitStart + 1)) * 60;
+               let menitHitung = ((60 - (menitStart + 1)) + menitEnd) * 60;
 
                let totalDetik = detikHitung + menitHitung;
 
                detik = totalDetik % 60;
                menit = (totalDetik - detik) / 60;
+
             } else {
                detik = detikEnd - detikStart;
                menit = 0;
@@ -544,7 +614,13 @@ session_start();
                },
                error: function(xhr, status, error) {
                   // Handle errors
-                  console.log(xhr.responseText);
+                  // console.log(xhr.responseText);
+
+                  Swal.fire({
+                     icon: "error",
+                     title: "Oops...",
+                     text: xhr.responseText,
+                  });
                }
             });
 
@@ -560,6 +636,13 @@ session_start();
    <?php
 
    require_once('config/database.php');
+
+   if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+      $ambilData = new DATA();
+      $ambilData->exportDataToSpreadsheet();
+   }
+
+
 
    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $interval = $_POST['interval'];

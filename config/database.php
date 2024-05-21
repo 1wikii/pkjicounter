@@ -10,8 +10,8 @@ class DATABASE
 {
 
    private $host = 'localhost';
-   private $DB_name = 'traffic_data';
-   private $table_name = 'traffic_data';
+   private $DB_name = 'pkjicounter';
+   private $table_name = 'data';
    private $DB_username = 'root';
    private $DB_password = '';
    public $DB;
@@ -71,7 +71,7 @@ class DATA extends DATABASE
 {
 
    // User Attribute
-   private $pengguna;
+   private $surveyor;
    private $interval;
    private $durasi;
    private $sm;
@@ -82,9 +82,9 @@ class DATA extends DATABASE
 
 
    /*------------CONSTRUCTOR----------------*/
-   public function __construct($pengguna = null, $interval = null, $durasi = null, $sm = null, $mp = null, $ks = null, $bb = null, $tb = null)
+   public function __construct($surveyor = null, $interval = null, $durasi = null, $sm = null, $mp = null, $ks = null, $bb = null, $tb = null)
    {
-      $this->pengguna = $pengguna;
+      $this->surveyor = $surveyor;
       $this->interval = $interval;
       $this->durasi = $durasi;
       $this->sm = $sm;
@@ -106,12 +106,12 @@ class DATA extends DATABASE
    {
       try {
 
-         $query = "INSERT INTO " . $this->getTableName() . " (`pengguna`,`interval`, durasi, SM, MP, KS, BB, TB)
-                  VALUES (:pengguna, :interval, :durasi, :SM, :MP, :KS, :BB, :TB)";
+         $query = "INSERT INTO " . $this->getTableName() . " (`surveyor`,`interval`, durasi, SM, MP, KS, BB, TB)
+                  VALUES (:surveyor, :interval, :durasi, :SM, :MP, :KS, :BB, :TB)";
 
          // preparing query
          $stmt = $this->DB->prepare($query);    // to helps prevent SQL injection attacks by parameterizing the query
-         $stmt->bindParam(":pengguna", $this->pengguna);
+         $stmt->bindParam(":surveyor", $this->surveyor);
          $stmt->bindParam(":interval", $this->interval);
          $stmt->bindParam(":durasi", $this->durasi);
          $stmt->bindParam(":SM", $this->sm);
@@ -133,7 +133,7 @@ class DATA extends DATABASE
    {
 
       // Query untuk mengambil data dari database
-      $query = "SELECT `pengguna`,`interval`, `durasi`, `SM`, `MP`, `KS`, `BB`, `TB` FROM " . $this->getTableName();
+      $query = "SELECT `surveyor`,`interval`, `durasi`, `SM`, `MP`, `KS`, `BB`, `TB` FROM " . $this->getTableName();
       $statement = $this->DB->prepare($query);
       $statement->execute();
 
@@ -146,7 +146,7 @@ class DATA extends DATABASE
 
       // Menulis kolom pada xlsx
       $sheetColumns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-      $databaseColums = ['pengguna', 'Interval', 'Durasi', 'SM', 'MP', 'KS', 'BB', 'TB'];
+      $databaseColums = ['surveyor', 'Interval', 'Durasi', 'SM', 'MP', 'KS', 'BB', 'TB'];
 
       $colIdx = 0;
       foreach ($sheetColumns as $col) {
@@ -162,7 +162,6 @@ class DATA extends DATABASE
          foreach ($result as $row) {
             $rowColIdx = 0;
             foreach ($row as $data) {
-               echo "<p>" . $data . "</p>";
                $sheet->getCell($sheetColumns[$rowColIdx] . strval($rowIdx))->setValue($data);
 
                $rowColIdx++;

@@ -1,3 +1,13 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION['username'])) {
+   header("Location: index.php");
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,15 +16,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Stopwatch</title>
 
-   <link rel="shortcut icon" href="./asset/traffic.png">
-
-   <!-- Framework dan stack lain -->
-   <script src="https://kit.fontawesome.com/c2b7ee3658.js" crossorigin="anonymous"></script>
-   <script src="node_modules/jquery/dist/jquery.min.js"></script>
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-   <link rel="stylesheet" href="index.css">
+   <?php require_once('_layout.php'); ?>
 
 </head>
 
@@ -22,31 +24,78 @@
 
    <main class="container">
 
-      <section id="item-stopwatch" class="">
-         <input name="stopwatch" id="stopwatch" class="item" value="00:00:00:00" disabled></input>
+      <section id="item-stopwatch" class="d-flex justify-content-center align-items-center">
+         <input name="stopwatch" id="stopwatch" class="item" value="00.00,00" disabled></input>
       </section>
 
-      <!-- <section id="item-durasi" class="">
-         <input name="durasi" id="durasi" class="item" value="00:00:00" disabled> </input>
-      </section> -->
+      <section id="item-panjang-segmen" class="d-flex justify-content-center align-items-center flex-column my-1">
 
-      <section id="item-6" class="section">
-         <div id="item-6-left-side">
-            <button id="item-tanggal" class="item"> </button>
-            <button id="item-waktu" class="item"> </button>
-         </div>
-         <div id="item-6-right-side">
-            <button id="item-play" class="startTimer reset" onclick="startTimer()"> <i class="fas fa-play"></i> </button>
-            <button id="item-pause" class="pauseTimer reset" onclick="pauseTimer()"> <i class="fas fa-pause"></i> </button>
+         <span class="text-warning fst-italic">
+            *Isi data jalan anda
+         </span>
+         <div class="form__group field">
+            <input id="panjang-segmen" class="form__field" placeholder="Panjang Segmen (m)" value="0" required />
+            <label for="panjang-segmen" class="form__label">Panjang Segmen (m)</label>
 
-            <button id="item-reset-stopwatch" class="resetTimer reset" onclick="resetTimer()"> <i class="fa-solid fa-clock-rotate-left"></i> </button>
-
-            <!-- <button id="item-data" class="item"> Data </button> -->
          </div>
       </section>
 
-      <section id="item-5" class="d-flex justify-content-center align-items-center mt-5">
-         <a href="main.php"><button id="item-stopwatch"> Back <i class="fa-regular fa-circle-left"></i> </button></a>
+      <section class="section my-4">
+         <div id="item-6-left-side" class="d-flex justify-content-center flex-column me-1">
+
+            <div class="d-flex" id="m-detik" style="margin: 10px 0;">
+               <input name="m-detik" class="m-0 w-100 item m-detik" value="0" disabled> </input>
+               <span class="align-self-end text-white fst-italic mx-1">
+                  (m/detik)
+               </span>
+            </div>
+            <div class="d-flex" id="km-jam" style="margin: 10px 0;">
+               <input name="km-jam" class="m-0 w-100 item km-jam" value="0" disabled> </input>
+               <span class="align-self-end text-white fst-italic mx-1">
+                  (km/jam)
+               </span>
+            </div>
+
+
+         </div>
+         <div id="item-6-right-side" class="d-flex justify-content-center align-items-end flex-column">
+            <button id="item-play" class="btn btn-success startTimer reset" onclick="startTimer()">
+               <div class="d-flex justify-content-center align-items-center flex-column">
+                  <i class="fa-solid fa-play"></i> <span style="font-size: 12px;">Start</span>
+               </div>
+            </button>
+            <button id="item-pause" class="btn btn-warning text-white pauseTimer reset" onclick="pauseTimer()">
+               <div class="d-flex justify-content-center align-items-center flex-column">
+                  <i class="fa-solid fa-pause"></i> <span style="font-size: 12px;">Pause</span>
+               </div>
+
+            </button>
+
+            <button id="item-reset-stopwatch" class="btn btn-danger resetTimer reset" onclick="resetTimer()">
+               <div class="d-flex justify-content-center align-items-center flex-column">
+                  <i class="fa-solid fa-rotate-left"></i> <span style="font-size: 12px;">Reset</span>
+               </div>
+            </button>
+
+         </div>
+      </section>
+
+
+      <section class="d-flex mb-3">
+         <a id="link-download" href="form-survei-kecepatan.xlsx" class="fw-bold fst-italic">
+            Download form survei
+         </a>
+      </section>
+
+      <section class="d-flex flex-column">
+         <button id="item-tanggal" class="w-100 item"> </button>
+         <button id="item-waktu" class="w-100 item"> </button>
+      </section>
+
+      <section class="d-flex flex-column mt-5 w-100">
+         <a href="main.php">
+            <button id="item-stopwatch" class="fw-bold p-1 my-1 w-100">Back <i class="fa-regular fa-circle-left ms-2"></i> </button>
+         </a>
       </section>
    </main>
 
@@ -69,10 +118,16 @@
       var startTimerButton = document.querySelector('.startTimer');
       var pauseTimerButton = document.querySelector('.pauseTimer');
       var timerDisplay = document.getElementById('stopwatch');
+
+      var mDetikButton = document.querySelector('.m-detik');
+      var kmJamButton = document.querySelector('.km-jam');
+      var panjangSegmen = document.getElementById('panjang-segmen');
+
       var startTime;
       var updatedTime;
       var difference;
       var tInterval;
+      var kInterval;
       var savedTime;
       var paused = 0;
       var running = 0;
@@ -83,10 +138,36 @@
       var seconds = 60;
       var durasiInterval;
 
+      var kecepatan = 0;
+
       function startTimer() {
+
+         if (panjangSegmen.value == "0") {
+
+            $(document).ready(function() {
+               Swal.fire({
+                  title: "<strong><i>Panjang Segmen</i></strong> tidak boleh nol!",
+                  icon: "warning",
+               })
+            });
+            return;
+         }
+
+         if (panjangSegmen.value == "") {
+
+            $(document).ready(function() {
+               Swal.fire({
+                  title: "<strong><i>Panjang Segmen</i></strong> tidak boleh kosong!",
+                  icon: "warning",
+               })
+            });
+            return;
+         }
+
          if (!running) {
             startTime = new Date().getTime();
             tInterval = setInterval(getShowTime, 1);
+            kInterval = setInterval(getKecepatan, 500);
             paused = 0;
             running = 1;
             timerDisplay.style.cursor = 'auto';
@@ -102,6 +183,7 @@
             // if timer never started, don't allow pause button to do anything
          } else if (!paused) {
             clearInterval(tInterval);
+            clearInterval(kInterval);
             savedTime = difference;
             paused = 1;
             running = 0;
@@ -117,17 +199,26 @@
 
       function resetTimer() {
          clearInterval(tInterval);
+         clearInterval(kInterval);
+         resetKecepatan();
+
+
          savedTime = 0;
          difference = 0;
          paused = 0;
          running = 0;
          milliseconds = 0;
-         timerDisplay.value = '00:00:00:00';
+         timerDisplay.value = '00.00,00';
          timerDisplay.style.cursor = 'pointer';
          startTimerButton.classList.remove('lighter');
          pauseTimerButton.classList.remove('lighter');
          startTimerButton.style.cursor = 'pointer';
          pauseTimerButton.style.cursor = 'auto';
+      }
+
+      function resetKecepatan() {
+         mDetikButton.value = "0";
+         kmJamButton.value = "0";
       }
 
       function getShowTime() {
@@ -164,10 +255,22 @@
          }
 
 
-         timerDisplay.value =
-            hours + ':' + minutes + ':' + seconds + ':' + milliseconds_str;
+         timerDisplay.value = minutes + '.' + seconds + ',' + milliseconds_str;
+
       }
 
+      function getKecepatan() {
+
+         let minutes = timerDisplay.value[0] + timerDisplay.value[1];
+         let seconds = timerDisplay.value[3] + timerDisplay.value[4];
+         let miliseconds = timerDisplay.value[6] + timerDisplay.value[7];
+         miliseconds = Number(miliseconds) / 1000;
+
+         let jumlahDetik = Number(minutes * 60) + (Number(seconds) + miliseconds);
+         mDetikButton.value = Number(Number(panjangSegmen.value) / jumlahDetik).toFixed(2);
+
+         kmJamButton.value = Number(Number(mDetikButton.value) * 3.36).toFixed(2);
+      }
 
 
 
@@ -193,6 +296,10 @@
             if (startUp) {
                timeOut();
                startUp = false;
+            }
+
+            if (panjangSegmen.value == "0" || panjangSegmen.value == "") {
+               return;
             }
 
             $("#item-pause").css({
@@ -221,9 +328,6 @@
 
                seconds = seconds - 1;
 
-               // if(){
-
-               // }
                if (seconds == 0) {
                   seconds = 60;
                   minutes = minutes - 1;
@@ -294,6 +398,7 @@
             $("#item-waktu").css({
                'color': 'white',
                'background-color': 'rgb(3, 10, 52)',
+               'margin-top': '10px',
             });
 
          }

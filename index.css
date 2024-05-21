@@ -92,15 +92,6 @@ button:active {
    flex-direction: row;
 }
 
-.container #item-6-left-side,
-.container #item-6-right-side {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   flex-direction: column;
-
-   padding: 10px;
-}
 
 .container #item-tanggal,
 .container #item-waktu {
@@ -111,35 +102,16 @@ button:active {
    background-color: rgb(3, 10, 52);
 }
 
+.container #item-waktu{
+    margin-top: 10px;
+}
+
 .container #item-6-right-side #item-reset,
 .container #item-6-right-side #item-set,
 .container #item-6-right-side #item-stop,
 .container #item-6-right-side #item-data {
    font-weight: bolder;
    font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-.container #item-durasi,
-.container #item-stopwatch {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-}
-
-#item-set,
-#item-stop,
-#item-play,
-#item-pause {
-   background-color: blue;
-}
-
-#item-data {
-   background-color: green;
-}
-
-#item-reset,
-#item-reset-stopwatch {
-   background-color: red;
 }
 
 /* khusus */
@@ -155,14 +127,11 @@ button:active {
    width: 2.8em;
 }
 
-#item-stopwatch {
-   font-weight: bold;
+#item-stopwatch,
+#item-hambatan {
    font-size: 1.4em;
 }
 
-#item-stopwatch i {
-   margin-left: 10px;
-}
 
 #stopwatch {
    width: 100%;
@@ -183,6 +152,91 @@ button:active {
    display: none;
 }
 
+#link-download{
+  color: #f5bd07;
+}
+
+#link-download:focus{
+  color: #8f6e03;
+}
+
+
+/* ----------------Input panjang segmen-------------*/
+:root{
+   --primary: #11998e;
+   --secondary: #38ef7d;
+   --white: #fff; 
+   --gray: rgba(79, 79, 78, 0.2);
+   --light-gray: rgba(103, 103, 102, 0.5);
+   --yellow: #f5bd07; 
+}
+
+
+.form__group {
+  position: relative;
+  padding: 10px 0 0 0;
+  width: 80%;
+}
+
+.form__field {
+  font-family: inherit;
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid var(--yellow);
+  outline: 0;
+  font-size: 1.3rem;
+  color: var(--white);
+  background: var(--gray);
+  transition: border-color 0.2s;
+
+   font-weight: bold;
+   font-style: italic;
+   padding: 20px 0 20px 0;
+
+  &::placeholder {
+   font-weight: normal;
+   font-style: italic;
+    color: var(--light-gray);
+  }
+
+  &:placeholder-shown ~ .form__label {
+    font-size: 1.1rem;
+    cursor: text;
+    top: 20px;
+    color: transparent;
+  }
+}
+
+.form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1.1rem;
+  font-weight: bold;
+   color: var(--white);
+}
+
+.form__field:focus {
+  ~ .form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1.1rem;
+    color: var(--white);
+    font-weight: bold;    
+  }
+}
+/* reset input */
+.form__field{
+  &:required,&:invalid { box-shadow:none; }
+}
+
+/* ----------------End Input panjang segmen-------------*/
+
+
+
 /* --------------- MODAL ALERT -------------- */
 .modal-dialog {
    margin: 50% 2% 0 2%;
@@ -199,6 +253,15 @@ button:active {
 }
 
 /* --------------- RESPONSIVE -------------- */
+
+@media (max-width: 900px) {
+
+
+   .container {
+      width: 800px;
+   }
+
+}
 
 @media (max-width: 450px) {
    body {
