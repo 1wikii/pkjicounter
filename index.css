@@ -1,6 +1,3 @@
-* {
-   font-size: 1em;
-}
 
 body,
 html {
@@ -163,12 +160,12 @@ button:active {
 
 /* ----------------Input panjang segmen-------------*/
 :root{
-   --primary: #11998e;
-   --secondary: #38ef7d;
-   --white: #fff; 
+   --primary: rgb(17, 153, 142);
+   --secondary: rgb(56, 239, 125);
+   --white: rgb(255, 255, 255); 
    --gray: rgba(79, 79, 78, 0.2);
-   --light-gray: rgba(103, 103, 102, 0.5);
-   --yellow: #f5bd07; 
+   --lighterGray: rgba(103, 103, 102, 0.5);
+   --yellow: rgb(245, 189, 7); 
 }
 
 
@@ -182,30 +179,31 @@ button:active {
   font-family: inherit;
   width: 100%;
   border: 0;
-  border-bottom: 2px solid var(--yellow);
+  border-bottom: 2px solid yellow;
   outline: 0;
   font-size: 1.3rem;
-  color: var(--white);
+  color: white;
   background: var(--gray);
   transition: border-color 0.2s;
 
    font-weight: bold;
    font-style: italic;
    padding: 20px 0 20px 0;
+}
 
-  &::placeholder {
+.form__field:placeholder {
    font-weight: normal;
    font-style: italic;
-    color: var(--light-gray);
+   color: rgba(103, 103, 102, 0.5);
   }
 
-  &:placeholder-shown ~ .form__label {
+.form__field:placeholder-shown + .form__label {
     font-size: 1.1rem;
     cursor: text;
     top: 20px;
     color: transparent;
   }
-}
+
 
 .form__label {
   position: absolute;
@@ -214,23 +212,27 @@ button:active {
   transition: 0.2s;
   font-size: 1.1rem;
   font-weight: bold;
-   color: var(--white);
+   color: white;
 }
 
-.form__field:focus {
-  ~ .form__label {
+.form__field:focus-within .form__label {
     position: absolute;
     top: 0;
     display: block;
     transition: 0.2s;
     font-size: 1.1rem;
-    color: var(--white);
+    color: white;
     font-weight: bold;    
-  }
+  
 }
 /* reset input */
-.form__field{
-  &:required,&:invalid { box-shadow:none; }
+
+
+.form__field:required{
+      box-shadow:none;
+}
+.form__field:invalid{
+    box-shadow:none;
 }
 
 /* ----------------End Input panjang segmen-------------*/

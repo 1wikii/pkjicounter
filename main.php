@@ -47,7 +47,6 @@ if (!isset($_SESSION['username'])) {
          </button>
       </section>
 
-      `
       <section id="item-3" class="section">
          <input name="ks" id="item-number-3" class="item" disabled> </input>
          <button id="item-button-3" class="item">
