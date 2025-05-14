@@ -1,5 +1,5 @@
    private $host = '';
-   private $DB_name = 'u844192434_data';
-   private $table_name = 'data';
-   private $DB_username = 'u844192434_mikhael';
-   private $DB_password = 'PKJI.counter2024';
+   private $DB_name = YOUR_DB_NAME;
+   private $table_name = YOUR_TABLE_NAME;
+   private $DB_username = YOUR_DB_USERNAME;
+   private $DB_password = YOUR_DB_PASSWORD;
