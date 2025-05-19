@@ -30,13 +30,15 @@ A web-based application for counting and tracking traffic data.
 
 ## Screenshots
 
-<div style="display: flex; flex-direction: column; justify-content: center; align-items:center;">
-<div style="font-weight: bold; margin: 20px 0 5px 0;">Main Page</div>
+<div align="center">
+
+  <div style="font-weight: bold; margin: 20px 0 5px 0;">Main Page</div>
     <img src="asset/screenshots-01.jpeg" width="500">
+
 
 <div style="font-weight: bold; margin: 40px 0 5px 0;">Stop watch</div>
     <img src="asset/screenshots-02.jpeg" width="500">
-</div>
+
 </div>
 
 ## License
